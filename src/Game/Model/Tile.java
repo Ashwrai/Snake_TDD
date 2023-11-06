@@ -3,8 +3,9 @@ package Game.Model;
 public enum Tile {
   BLANK(0),
   SNAKE(1),
-  FOOD(2),
-  WALL(3);
+  HEAD(2),
+  FOOD(3),
+  WALL(4);
 
   private final int value;
 
