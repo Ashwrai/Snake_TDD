@@ -92,6 +92,9 @@ public class Controller {
                 if (snake.getDirection() != Direction.RIGHT)
                     this.snake.setDirection(direction);
             }
+            case null, default -> {
+                this.snake.setDirection(direction);
+            }
         }
     }
 

@@ -1,5 +1,7 @@
 package Game.Model;
 
+import Game.Controller.Controller;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,14 +16,15 @@ public class Snake {
   public Snake(Coordinate initialPos){
     this.head = initialPos;
     this.direction = Direction.RIGHT;
-    this.length = 0;
+    this.length = 1;
     this.body = new ArrayList<Coordinate>();
-    body.add(initialPos);
+    this.body.add(new Coordinate(4,2));
   }
 
   public void setHead(Coordinate coord){
     this.head = coord;
   }
+
   public void setBody(Coordinate[] coords){
     List<Coordinate> coordinateList = Arrays.asList(coords);
     this.body = new ArrayList<>(coordinateList);
@@ -31,17 +34,20 @@ public class Snake {
     this.direction = direction;
   }
 
+
   public void move(){
-    Coordinate originalPos = this.head;
-    body.add(originalPos);
-    if (length <= body.size())
-      body.removeFirst();
+    Coordinate originalPos = new Coordinate(this.head);
+    body.addFirst(originalPos);
+    if (length < body.size())
+      body.removeLast();
     originalPos.plus(direction.vector);
     this.head = originalPos;
   }
+
   public void grow(){
     length++;
   }
+
   public Direction getDirection(){
     return this.direction;
   }

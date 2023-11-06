@@ -9,6 +9,10 @@ public class Coordinate {
     this.x = px;
     this.y = py;
   }
+  public Coordinate(Coordinate coord){
+    this.x = coord.getX();
+    this.y = coord.getY();
+  }
   public int getX(){
     return this.x;
   }

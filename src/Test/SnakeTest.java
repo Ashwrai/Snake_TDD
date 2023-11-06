@@ -3,32 +3,38 @@ package Test;
 import Game.Controller.Controller;
 import Game.Model.*;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 class SnakeTest {
   private final Coordinate boardDim = new Coordinate(9,9);
+
+  // TODO Check why sequential execution of this test gives error. (Initialize controller before for loop)
   @Test
   public void testSnakeMove(){
     // testear que la snake pueda moverse a cada direccion
     // Un for, por cada direccion, mover y comprovar que se ha movido correctamente
-    // Assert(snake.position, oldPosition4
-
-    Snake snake = new Snake(new Coordinate(0, 0));
+    // Assert(snake.position, oldPosition)
+    int correct = 0;
     for (Direction direction : Direction.values()) {
-      Coordinate oldPosition = snake.getHeadPosition();
-
-      snake.setDirection(direction);
-
-      snake.move();
+      Controller controller = new Controller(boardDim);
+      Coordinate oldPosition = new Coordinate(controller.getSnakeHeadPos());
+      controller.setSnakeDirection(direction);
+      controller.run();
       oldPosition.plus(direction.vector);
-      assertEquals(snake.getHeadPosition(), oldPosition);
+      if (controller.getSnakeHeadPos().getX() == oldPosition.getX() && controller.getSnakeHeadPos().getY() == oldPosition.getY()){
+        correct++;
+      }
     }
+    // Its 3 because there is one case where the snake should not move to the direction indicated.
+    assertEquals(correct, 3);
   }
 
+  @Test
   public void testWallCollision(){
     // Inicializar la snake en una posicion anterior a un wall y mover
     // Assert que un metodo outOfBounds que devuelva true
     // Testear que
-    // Optional: Testear cada pared
     int collisions = 0;
     Controller controller = new Controller(boardDim);
     Coordinate[] coords = {new Coordinate(7, 7), new Coordinate(7, 7), new Coordinate(1, 1), new Coordinate(1, 1)};
@@ -42,9 +48,11 @@ class SnakeTest {
       }
     }
     assertEquals(collisions, 4);
-
   }
 
+  // TODO Check snake State
+
+  @Test
   public void testFoodCollision(){
     // Inicializar la snake en una posicion y la comida en otra
     // Comprovar el augmento de longitud de la snake
@@ -65,6 +73,7 @@ class SnakeTest {
     assertEquals(correct, 4);
   }
 
+  @Test
   public void testBodyCollision(){
     // Inicializar las posiciones donde esta la snake, y positionar la cabeza
     // justo antes de una celda con un cuerpo de snake
@@ -77,5 +86,7 @@ class SnakeTest {
 
     assertTrue(controller.isGameOver());
   }
+
+
 
 }

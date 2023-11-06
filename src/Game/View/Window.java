@@ -13,8 +13,7 @@ import java.awt.event.KeyListener;
 public class Window extends JFrame implements Runnable {
   private Controller controller;
   private GamePanel gamePanel;
-
-  private boolean keyEventHandled;
+  private Direction keyEvent;
 
   public Window(Controller controller) {
     this.controller = controller;
@@ -30,6 +29,8 @@ public class Window extends JFrame implements Runnable {
     this.addKeyListener(new ArrowKeyListener());
 
     this.setVisible(true);
+
+    keyEvent = Direction.RIGHT;
   }
 
   @Override
@@ -43,14 +44,13 @@ public class Window extends JFrame implements Runnable {
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
-
+      controller.setSnakeDirection(keyEvent);
       controller.run();
       if (controller.isGameOver()) {
         break;
       }
       board = controller.getBoardState();
       gamePanel.setBoard(board);
-      keyEventHandled = true;
     }
   }
 
@@ -71,7 +71,7 @@ public class Window extends JFrame implements Runnable {
     protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       if (board != null) {
-        int cellSize = 20; // Adjust the cell size as needed
+        int cellSize = 37; // Adjust the cell size as needed
 
         for (int i = 0; i < board.length; i++) {
           for (int j = 0; j < board[i].length; j++) {
@@ -100,6 +100,11 @@ public class Window extends JFrame implements Runnable {
             g.fillRect(x, y, cellSize, cellSize);
           }
         }
+
+        // Display the score
+        String scoreText = "Score: " + controller.getScore();
+        g.setColor(Color.BLACK);
+        g.drawString(scoreText, 10, getHeight() - 10); // Adjust the position as needed
       }
     }
   }
@@ -108,27 +113,21 @@ public class Window extends JFrame implements Runnable {
     @Override
     public void keyPressed(KeyEvent e) {
       int key = e.getKeyCode();
-      Direction dir = null;
-      if (keyEventHandled) {
-        switch (key) {
-          case (KeyEvent.VK_LEFT):
-            dir = Direction.LEFT;
-            break;
-          case (KeyEvent.VK_RIGHT):
-            dir = Direction.RIGHT;
-            break;
-          case (KeyEvent.VK_UP):
-            dir = Direction.UP;
-            break;
-          case (KeyEvent.VK_DOWN):
-            dir = Direction.DOWN;
-            break;
-        }
-        if (dir != null) {
-          controller.setSnakeDirection(dir);
-          keyEventHandled = false;
-        }
+      switch (key) {
+        case (KeyEvent.VK_LEFT):
+          keyEvent = Direction.LEFT;
+          break;
+        case (KeyEvent.VK_RIGHT):
+          keyEvent = Direction.RIGHT;
+          break;
+        case (KeyEvent.VK_UP):
+          keyEvent = Direction.UP;
+          break;
+        case (KeyEvent.VK_DOWN):
+          keyEvent = Direction.DOWN;
+          break;
       }
+
     }
   }
 }
