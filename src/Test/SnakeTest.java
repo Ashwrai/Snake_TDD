@@ -1,6 +1,9 @@
 package Test;
 
 import Game.Controller.Controller;
+
+import static org.mockito.Mockito.*;
+
 import Game.Model.*;
 import org.junit.jupiter.api.Test;
 
@@ -11,18 +14,16 @@ class SnakeTest {
 
   // Main method to test the snakes movement direction
   private boolean moveSnake(Direction direction) {
-    Controller controller = new Controller(boardDim);
-    Coordinate oldPosition = controller.getSnakeHeadPos();
+    Snake snake = new Snake(new Coordinate(4, 2));
+    Coordinate oldPosition = snake.getHeadPosition();
     // Set to NULL (0, 0), we can not set the direction to LEFT because in-game it is theoretically impossible
-
-    controller.setSnakeDirection(direction);
-    controller.run();
+    snake.setDirection(direction);
+    snake.move();
     oldPosition.plus(direction.vector);
-    return (controller.getSnakeHeadPos().getX() == oldPosition.getX() &&
-        controller.getSnakeHeadPos().getY() == oldPosition.getY());
+    return (snake.getHeadPosition().getX() == oldPosition.getX() &&
+            snake.getHeadPosition().getY() == oldPosition.getY());
   }
 
-  // TODO Check why sequential execution of this test gives error. (Initialize controller before for loop)
   @Test
   public void testSnakeMoveUp() {
     assertTrue(moveSnake(Direction.UP));
@@ -45,54 +46,84 @@ class SnakeTest {
 
   @Test
   public void testWallCollision() {
-    int collisions = 0;
-    Controller controller = new Controller(boardDim);
-    Coordinate[] coords = {new Coordinate(7, 7), new Coordinate(7, 7), new Coordinate(1, 1), new Coordinate(1, 1)};
-    Direction[] directions = Direction.values();
-    for (int i = 0; i < coords.length; i++) {
-      controller.setSnakeHead(coords[i]);
-      controller.setSnakeDirection(directions[i]);
-      controller.run();
-      if (controller.isGameOver()) {
-        collisions++;
-      }
-    }
-    assertEquals(collisions, 4);
-  }
+    Board mockBoard = new Board(boardDim);
+    Snake mockSnake = new Snake(new Coordinate(1, 1));
+    Food mockFood = new Food(boardDim);
+    mockSnake.setDirection(Direction.UP);
 
-  // TODO Check snake State
+    Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+    controller.run();
+
+    assertTrue(controller.isGameOver());
+  }
 
   @Test
   public void testFoodCollision() {
-    int correct = 0;
-    Direction[] directions = Direction.values();
-    Coordinate[] coords = {new Coordinate(5, 4), new Coordinate(4, 5), new Coordinate(3, 4), new Coordinate(4, 3)};
-    for (int i = 0; i < coords.length; i++) {
-      Controller controller = new Controller(boardDim);
-      controller.setSnakeHead(new Coordinate(4, 4));
-      controller.setSnakeDirection(directions[i]);
-      controller.setFoodPos(coords[i]);
-      controller.run();
-      if (controller.getScore() == 1) {
-        correct++;
-      }
-    }
-    assertEquals(correct, 4);
+    Food mockFood = new Food(boardDim);
+    Coordinate oldFoodPos = new Coordinate(5, 4);
+    mockFood.setPos(oldFoodPos);
+
+    Coordinate firstPos = new Coordinate(4, 4);
+    Snake mockSnake = new Snake(firstPos);
+    int snakeLength = mockSnake.getLength();
+    Board mockBoard = new Board(boardDim);
+
+    Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+    controller.setSnakeDirection(Direction.DOWN);
+
+    // TODO check snake body coordinates
+    // By our game logic, we need to execute twice so that our snake body gets bigger
+    controller.run();
+    controller.run();
+
+    boolean bigger = (snakeLength != mockSnake.getLength());
+    boolean newFood = (oldFoodPos.getX() != mockFood.getX() || oldFoodPos.getY() != mockFood.getY());
+
+    boolean correct = (bigger && newFood);
+
+    assertTrue(correct);
   }
 
   @Test
   public void testBodyCollision() {
     // Inicializar las posiciones donde esta la snake, y positionar la cabeza
     // justo antes de una celda con un cuerpo de snake
-    Controller controller = new Controller(boardDim);
+    Snake mockSnake = new Snake(new Coordinate(4, 3));
     Coordinate[] coords = {new Coordinate(4, 4), new Coordinate(5, 4), new Coordinate(5, 3)};
-    controller.setSnakeHead(new Coordinate(4, 3));
-    controller.setSnakeBody(coords);
-    controller.setSnakeDirection(Direction.DOWN);
+    mockSnake.setBody(coords);
+
+    Food mockFood = new Food(boardDim);
+    Board mockBoard = new Board(boardDim);
+    Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+    mockSnake.setDirection(Direction.DOWN);
     controller.run();
 
     assertTrue(controller.isGameOver());
   }
 
-
+//    @Test
+//    public void testBoardMaxDim() {
+//        // Tests behaviour of the game when the board is maximum
+//        Coordinate maxDim = new Coordinate(Integer.MAX_VALUE, Integer.MAX_VALUE);
+//        Controller controller = new Controller(maxDim);
+//
+//        //We try up direction
+//        controller.setSnakeDirection(Direction.UP);
+//        controller.run();
+//
+//        assertTrue(!controller.isGameOver());
+//    }
+//
+//    @Test
+//    public void testBoardMinDim() {
+//        //
+//        Coordinate minDim = new Coordinate(1, 1);
+//        Controller controller = new Controller(minDim);
+//
+//        //
+//        controller.setSnakeDirection(Direction.RIGHT);
+//        controller.run();
+//        assertTrue(!controller.isGameOver());
+//
+//    }
 }

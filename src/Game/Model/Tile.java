@@ -16,8 +16,4 @@ public enum Tile {
   Tile(int value) {
     this.value = value;
   }
-
-  public int getValue() {
-    return value;
-  }
 }

@@ -23,11 +23,12 @@ public class Window extends JFrame implements Runnable {
 
   public Window(Controller controller) {
     this.controller = controller;
-    this.setFocusable(true);
-    this.setFocusTraversalKeysEnabled(false);
-    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    this.setFocusable(true); //The window responds to keyboard events (inputs)
+    this.setFocusTraversalKeysEnabled(false); //Preventing unexpected navigation behavior between components.
+    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Default close operation to exit the window
     this.setSize(400, 400);
 
+    // Creates a new GamePanel and adds it to the window
     gamePanel = new GamePanel(controller);
     this.add(gamePanel);
 
@@ -36,22 +37,23 @@ public class Window extends JFrame implements Runnable {
 
     this.setVisible(true);
 
-    keyEvent = Direction.NULL;
+    keyEvent = Direction.NULL; // Represent no key pressed initially
   }
 
   @Override
   public void run() {
-    // Your game loop logic here
     Tile[][] board = controller.getBoardState();
     gamePanel.setBoard(board);
+
+    //Main game loop
     while (true) {
       try {
-        Thread.sleep(500); // Adjust the sleep time to control the game loop speed
+        Thread.sleep(500); // Adjust the sleep time to control the snake speed for the player
       } catch (InterruptedException e) {
         throw new RuntimeException(e);
       }
       controller.setSnakeDirection(keyEvent);
-      controller.run();
+      controller.run(); //updates board with the actual state
       if (controller.isGameOver()) {
         break;
       }
@@ -114,7 +116,9 @@ public class Window extends JFrame implements Runnable {
       }
     }
   }
-
+  /**
+   * KeyListener to handle arrow key events with our class Direction.
+   */
   class ArrowKeyListener extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {

@@ -60,4 +60,8 @@ public class Snake {
     return this.body;
   }
 
+  public int getLength() {
+    return this.length;
+  }
+
 }
