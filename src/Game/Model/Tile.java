@@ -1,5 +1,9 @@
 package Game.Model;
 
+/**
+ * Different types of tiles that can be on the game board.
+ */
+
 public enum Tile {
   BLANK(0),
   SNAKE(1),

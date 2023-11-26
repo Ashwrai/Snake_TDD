@@ -3,8 +3,8 @@ package Game.Model;
 public class Food {
     private int x;
     private int y;
-    private int boardWidth;
-    private int boardHeight;
+    private final int boardWidth;
+    private final int boardHeight;
 
     public Food(Coordinate boardDim) {
         // Generate initial random position for the food
@@ -13,7 +13,7 @@ public class Food {
         generateRandomPosition();
     }
 
-    public void setPos(Coordinate position){
+    public void setPos(Coordinate position) {
         this.x = position.getX();
         this.y = position.getY();
     }
@@ -24,9 +24,10 @@ public class Food {
         this.y = 1 + (int) (Math.random() * (boardHeight - 2));
     }
 
-    public Coordinate getPos(){
+    public Coordinate getPos() {
         return new Coordinate(x, y);
     }
+
     public int getX() {
         return x;
     }
@@ -34,5 +35,6 @@ public class Food {
     public int getY() {
         return y;
     }
+
 
 }

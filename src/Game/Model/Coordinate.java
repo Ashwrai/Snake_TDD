@@ -5,24 +5,28 @@ public class Coordinate {
   private int x;
   private int y;
 
-  public Coordinate(int px,int py) {
+  public Coordinate(int px, int py) {
     this.x = px;
     this.y = py;
   }
-  public Coordinate(Coordinate coord){
+
+  public Coordinate(Coordinate coord) {
     this.x = coord.getX();
     this.y = coord.getY();
   }
-  public int getX(){
+
+  public int getX() {
     return this.x;
   }
-  public int getY(){
+
+  public int getY() {
     return this.y;
   }
 
-  //Cambio de posicion
-  public void plus(Coordinate coordinate){
+  //Method to change position
+  public void plus(Coordinate coordinate) {
     this.x += coordinate.getX();
     this.y += coordinate.getY();
   }
 }
+

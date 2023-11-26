@@ -1,7 +1,9 @@
 package Game.View;
+
 import Game.Controller.Controller;
 import Game.Model.Direction;
 import Game.Model.Tile;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -10,9 +12,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Represents the main game window with the game board.
+ */
+
 public class Window extends JFrame implements Runnable {
-  private Controller controller;
-  private GamePanel gamePanel;
+  private final Controller controller;
+  private final GamePanel gamePanel;
   private Direction keyEvent;
 
   public Window(Controller controller) {
@@ -30,7 +36,7 @@ public class Window extends JFrame implements Runnable {
 
     this.setVisible(true);
 
-    keyEvent = Direction.RIGHT;
+    keyEvent = Direction.NULL;
   }
 
   @Override
@@ -55,7 +61,7 @@ public class Window extends JFrame implements Runnable {
   }
 
   class GamePanel extends JPanel {
-    private Controller controller;
+    private final Controller controller;
     private Tile[][] board;
 
     public GamePanel(Controller controller) {
