@@ -67,8 +67,5 @@ public class Snake {
         return this.length;
     }
 
-  public int getLength() {
-    return this.length;
-  }
 
 }
