@@ -1,9 +1,8 @@
 package test;
 
-import Game.Controller.Controller;
-import Game.Model.*;
+import game.controller.Controller;
+import game.model.*;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -67,6 +66,10 @@ class SnakeTest {
         Board mockBoard = new Board(boardDim);
 
         Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+        while (!controller.inBoard(mockFood.getPos())) {
+            mockFood.generateRandomPosition();
+        }
+
         controller.setSnakeDirection(Direction.DOWN);
 
         // By our game logic, we need to execute twice so that our snake body gets bigger
@@ -101,6 +104,32 @@ class SnakeTest {
         assertTrue(controller.isGameOver());
     }
 
+    @Test
+    public void testMinBoard() {
+        Coordinate minDim = new Coordinate(3, 3); // Minimum board dimensions
+        Snake mockSnake = new Snake(new Coordinate(1, 1));
+        Board mockBoard = new Board(minDim);
+        Food mockFood = new Food(minDim);
+
+        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+        controller.setSnakeDirection(Direction.LEFT);
+        controller.run();
+
+        assertTrue(controller.isGameOver());
+    }
+    @Test
+    public void testMaxBoard() {
+        Coordinate maxDim = new Coordinate(1000, 1000); // Big board dimension
+        Snake mockSnake = new Snake(new Coordinate(998, 998));
+        Board mockBoard = new Board(maxDim);
+        Food mockFood = new Food(maxDim);
+
+        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+        controller.setSnakeDirection(Direction.RIGHT);
+        controller.run();
+
+        assertTrue(controller.isGameOver());
+    }
 //    @Test
 //    public void testBoardMaxDim() {
 //        // Tests behaviour of the game when the board is maximum

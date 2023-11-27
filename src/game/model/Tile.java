@@ -1,4 +1,4 @@
-package Game.Model;
+package game.model;
 
 /**
  * Different types of tiles that can be on the game board.

@@ -1,8 +1,8 @@
-package Game;
+package game;
 
-import Game.Controller.Controller;
-import Game.Model.Coordinate;
-import Game.View.Window;
+import game.controller.Controller;
+import game.model.Coordinate;
+import game.view.Window;
 
 public class Main {
     static final Coordinate BOARD_DIM = new Coordinate(9, 9);

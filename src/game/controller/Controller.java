@@ -1,6 +1,6 @@
-package Game.Controller;
+package game.controller;
 
-import Game.Model.*;
+import game.model.*;
 
 import java.util.ArrayList;
 
@@ -119,6 +119,10 @@ public class Controller {
                 this.snake.setDirection(direction);
             }
         }
+    }
+
+    public long getSpeedUp() {
+        return (long) (Math.log(score + 1) * 50);
     }
 
     public Tile[][] getBoardState() {

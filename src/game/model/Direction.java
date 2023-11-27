@@ -1,4 +1,4 @@
-package Game.Model;
+package game.model;
 
 public enum Direction {
     // Possible directions the snake can move

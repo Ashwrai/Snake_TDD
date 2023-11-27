@@ -1,8 +1,8 @@
-package Game.View;
+package game.view;
 
-import Game.Controller.Controller;
-import Game.Model.Direction;
-import Game.Model.Tile;
+import game.controller.Controller;
+import game.model.Direction;
+import game.model.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -160,7 +160,14 @@ public class Window extends JFrame implements ActionListener {
             //Main game loop
             while (true) {
                 try {
-                    Thread.sleep(500); // Adjust the sleep time to control the snake speed for the player
+                    long speedUp = controller.getSpeedUp();
+
+                    long sleepTime = 500 - speedUp;
+                    if (sleepTime < 100) {
+                        sleepTime = 100; // Ensuring a minimum sleep time for smoother gameplay
+                    }
+
+                    Thread.sleep(sleepTime); // Adjust the sleep time to control the snake speed for the player
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

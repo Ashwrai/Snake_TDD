@@ -1,4 +1,4 @@
-package Game.Model;
+package game.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ public class Snake {
         this.direction = Direction.NULL; // Initial direction is set to right
         this.length = 1;
         this.body = new ArrayList<Coordinate>();
-        this.body.add(new Coordinate(4, 2));
+        this.body.add(initialPos);
     }
 
     public void setBody(Coordinate[] coords) {
