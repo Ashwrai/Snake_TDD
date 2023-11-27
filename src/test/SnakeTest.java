@@ -4,8 +4,7 @@ import game.controller.Controller;
 import game.model.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SnakeTest {
     private final Coordinate boardDim = new Coordinate(9, 9);
@@ -51,7 +50,7 @@ class SnakeTest {
         controller.setSnakeDirection(Direction.UP);
         controller.run();
 
-        assertTrue(controller.isGameOver());
+        assertTrue(controller.isGameOverWall());
     }
 
     @Test
@@ -94,7 +93,7 @@ class SnakeTest {
         snake.setDirection(Direction.DOWN);
         controller.run();
 
-        assertTrue(controller.isGameOver());
+        assertTrue(controller.isGameOverBody());
     }
 
     @Test
@@ -108,12 +107,12 @@ class SnakeTest {
         controller.setSnakeDirection(Direction.LEFT);
         controller.run();
 
-        assertTrue(controller.isGameOver());
+        assertTrue(controller.isGameOverWall());
     }
 
     @Test
     public void testMinPlayableBoard() {
-        Coordinate minDim = new Coordinate(4, 3); // Minimum board dimensions
+        Coordinate minDim = new Coordinate(4, 3); // Minimum playable board dimensions (2 Tiles)
         Snake snake = new Snake(new Coordinate(1, 1));
         Board board = new Board(minDim);
         Food food = new Food(minDim);
@@ -137,7 +136,7 @@ class SnakeTest {
         controller.setSnakeDirection(Direction.RIGHT);
         controller.run();
 
-        assertTrue(controller.isGameOver());
+        assertTrue(controller.isGameOverWall());
     }
 
     @Test
@@ -153,11 +152,7 @@ class SnakeTest {
 
         Controller controller = new Controller(snake, board, food);
 
-        while (!controller.validPositionInBoard(food.getPos())) {
-            food.generateRandomPosition();
-        }
-
-        snake.setLength(controller.getMaxScore() - 1 );
+        snake.setLength(controller.getMaxScore() - 1);
         controller.setSnakeDirection(Direction.DOWN);
 
         // By our game logic, we need to execute twice so that our snake body gets bigger

@@ -13,24 +13,14 @@ public class Snake {
 
     public Snake(Coordinate initialPos) {
         this.head = initialPos;
-        this.direction = Direction.NULL; // Initial direction is set to right
+        this.direction = Direction.NULL; // Initial direction is set to NULL, Snake does not from unless instructed
         this.length = 1;
         this.body = new ArrayList<Coordinate>();
         this.body.add(initialPos);
     }
 
-    public void setBody(Coordinate[] coords) {
-        List<Coordinate> coordinateList = Arrays.asList(coords);
-        this.body = new ArrayList<>(coordinateList);
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    // Method to move the snake in the current direction
     public void move() {
-        Coordinate originalPos = new Coordinate(this.head); //Copy of current position
+        Coordinate originalPos = new Coordinate(this.head);
         body.addFirst(originalPos);
         if (length < body.size())
             body.removeLast();
@@ -51,11 +41,12 @@ public class Snake {
         length++;
     }
 
-    public void setLength (int length) {
-        this.length = length;
-    }
     public Direction getDirection() {
         return this.direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 
     public Coordinate getHeadPosition() {
@@ -66,8 +57,17 @@ public class Snake {
         return this.body;
     }
 
+    public void setBody(Coordinate[] coords) {
+        List<Coordinate> coordinateList = Arrays.asList(coords);
+        this.body = new ArrayList<>(coordinateList);
+    }
+
     public int getLength() {
         return this.length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
     }
 
 

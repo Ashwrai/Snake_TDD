@@ -8,10 +8,11 @@ public class Controller {
     private final Board board; // 2D array of Tiles representing the game board
     private final Snake snake;
     private final Food food;
-    private int score;
-    private boolean gameOver;
-    private boolean gameWon;
     private final int maxScore;
+    private int score;
+    private boolean gameOverWall;
+    private boolean gameOverBody;
+    private boolean gameWon;
 
     public Controller(Coordinate boardDim) {
         this.board = new Board(boardDim); //Initialize game board
@@ -23,7 +24,8 @@ public class Controller {
         updateBoard();
         this.maxScore = maxScore();
         this.score = 0;
-        this.gameOver = false;
+        this.gameOverWall = false;
+        this.gameOverBody = false;
         this.gameWon = false;
     }
 
@@ -34,7 +36,8 @@ public class Controller {
         updateBoard();
         this.maxScore = maxScore();
         this.score = 0;
-        this.gameOver = false;
+        this.gameOverWall = false;
+        this.gameOverBody = false;
         this.gameWon = false;
     }
 
@@ -51,8 +54,10 @@ public class Controller {
         if (snake.getDirection() != Direction.NULL) {
             Tile nextTile = this.board.getTile(this.snake.getHeadPosition().getX(), this.snake.getHeadPosition().getY());
             if (nextTile != Tile.BLANK) {
-                if (nextTile == Tile.WALL || nextTile == Tile.SNAKE) {
-                    gameOver = true;
+                if (nextTile == Tile.WALL) {
+                    gameOverWall = true;
+                } else if (nextTile == Tile.SNAKE) {
+                    gameOverBody = true;
                 } else if (nextTile == Tile.FOOD) {
                     foodCollision();
                 } else if (nextTile == Tile.HEAD) {
@@ -158,15 +163,19 @@ public class Controller {
         return this.score;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
+    public boolean isGameOverWall() {
+        return gameOverWall;
+    }
+
+    public boolean isGameOverBody() {
+        return gameOverBody;
     }
 
     public boolean isGameWon() {
         return gameWon;
     }
 
-    public int getMaxScore(){
+    public int getMaxScore() {
         return this.maxScore;
     }
 

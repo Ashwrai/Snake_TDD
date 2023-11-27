@@ -26,7 +26,7 @@ public class LoopTest {
     public void testGetMaxScoreWithExtremeCases() {
         // Testing with larger board sizes
         testMaxScore(new Coordinate(20, 20), 324);
-        testMaxScore(new Coordinate(1000, 1000), 996004 );
+        testMaxScore(new Coordinate(1000, 1000), 996004);
     }
 
     // Helper method to perform tests for getMaxScore() based on different board dimensions

@@ -1,21 +1,15 @@
 package game.model;
 
 public class Food {
-    private int x;
-    private int y;
     private final int boardWidth;
     private final int boardHeight;
+    private int x;
+    private int y;
 
     public Food(Coordinate boardDim) {
-        // Generate initial random position for the food
         boardWidth = boardDim.getX();
         boardHeight = boardDim.getY();
         generateRandomPosition();
-    }
-
-    public void setPos(Coordinate position) {
-        this.x = position.getX();
-        this.y = position.getY();
     }
 
     public void generateRandomPosition() {
@@ -26,6 +20,11 @@ public class Food {
 
     public Coordinate getPos() {
         return new Coordinate(x, y);
+    }
+
+    public void setPos(Coordinate position) {
+        this.x = position.getX();
+        this.y = position.getY();
     }
 
     public int getX() {

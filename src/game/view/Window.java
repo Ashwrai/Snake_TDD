@@ -23,7 +23,7 @@ import java.util.Scanner;
 
 public class Window extends JFrame implements ActionListener {
     private final Controller controller;
-    private GamePanel gamePanel;
+    private final GamePanel gamePanel;
     JButton newGameButton;
     JButton highestScoresButton;
     JButton exitButton;
@@ -102,7 +102,7 @@ public class Window extends JFrame implements ActionListener {
         scoresFrame.setVisible(true);
     }
 
-        static class GamePanel extends JPanel {
+    static class GamePanel extends JPanel {
         private final Controller controller;
         private Tile[][] board;
 
@@ -202,7 +202,7 @@ public class Window extends JFrame implements ActionListener {
                 }
                 controller.setSnakeDirection(keyEvent);
                 controller.run(); //updates board with the actual state
-                if (controller.isGameOver() || controller.isGameWon()) {
+                if (controller.isGameOverWall() || controller.isGameOverBody() || controller.isGameWon()) {
                     break;
                 }
                 board = controller.getBoardState();
@@ -211,13 +211,54 @@ public class Window extends JFrame implements ActionListener {
 
             frame.remove(gamePanel);
             JLabel finalLabel;
-            if (controller.isGameOver()) {
-                finalLabel = new JLabel("Game Over!");
+            if (controller.isGameOverWall()) {
+                finalLabel = new JLabel("Game Over! You it a wall");
+            } else if (controller.isGameOverBody()) {
+                finalLabel = new JLabel("Game Over! You ate yourself");
             } else {
                 finalLabel = new JLabel("You won !");
             }
 
             finalPanel(finalLabel);
+        }
+
+        public void finalPanel(JLabel finalLabel) {
+            JPanel finalPanel = new JPanel();
+
+            JTextField usernameField = new JTextField(20);
+            finalPanel.add(finalLabel);
+
+            finalPanel.add(new JLabel("To Keep the Score, Enter Username: "));
+            finalPanel.add(usernameField);
+
+            // Create a button to save username and handle the file writing
+            JButton saveButton = new JButton("Save Username");
+            saveButton.addActionListener(e -> {
+                String username = usernameField.getText();
+                if (!username.isEmpty()) {
+                    saveUsernameToFile(username);
+                }
+                frame.dispose();
+            });
+            finalPanel.add(saveButton);
+
+            // Add the game over panel to the frame after the game loop finishes
+            frame.add(finalPanel, BorderLayout.CENTER);
+
+            // Repaint and update the UI
+            frame.revalidate();
+            frame.repaint();
+        }
+
+        private void saveUsernameToFile(String username) {
+            try {
+                FileWriter writer = new FileWriter("usernames.txt", true); // Appends to file
+                writer.write(username + " " + controller.getScore() + "\n");
+                writer.close();
+                System.out.println("Username saved successfully!");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
 
         class ArrowKeyListener extends KeyAdapter {
@@ -238,45 +279,6 @@ public class Window extends JFrame implements ActionListener {
                         keyEvent = Direction.DOWN;
                         break;
                 }
-            }
-        }
-
-        public void finalPanel(JLabel finalLabel) {
-            JPanel finalPanel = new JPanel();
-
-            JTextField usernameField = new JTextField(20);
-            finalPanel.add(finalLabel);
-
-            finalPanel.add(new JLabel("To Keep the Score, Enter Username: "));
-            finalPanel.add(usernameField);
-
-// Create a button to save username and handle the file writing
-            JButton saveButton = new JButton("Save Username");
-            saveButton.addActionListener(e -> {
-                String username = usernameField.getText();
-                if (!username.isEmpty()) {
-                    saveUsernameToFile(username);
-                }
-                frame.dispose();
-            });
-            finalPanel.add(saveButton);
-
-// Add the game over panel to the frame after the game loop finishes
-            frame.add(finalPanel, BorderLayout.CENTER);
-
-// Repaint and update the UI
-            frame.revalidate();
-            frame.repaint();
-        }
-
-        private void saveUsernameToFile(String username) {
-            try {
-                FileWriter writer = new FileWriter("usernames.txt", true); // Appends to file
-                writer.write(username + " " + controller.getScore() + "\n");
-                writer.close();
-                System.out.println("Username saved successfully!");
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
         }
     }
