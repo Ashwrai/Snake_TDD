@@ -43,12 +43,12 @@ class SnakeTest {
 
     @Test
     public void testWallCollision() {
-        Board mockBoard = new Board(boardDim);
-        Snake mockSnake = new Snake(new Coordinate(1, 1));
-        Food mockFood = new Food(boardDim);
-        mockSnake.setDirection(Direction.UP);
+        Board board = new Board(boardDim);
+        Snake snake = new Snake(new Coordinate(1, 1));
+        Food food = new Food(boardDim);
+        snake.setDirection(Direction.UP);
 
-        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+        Controller controller = new Controller(snake, board, food);
         controller.run();
 
         assertTrue(controller.isGameOver());
@@ -56,18 +56,18 @@ class SnakeTest {
 
     @Test
     public void testFoodCollision() {
-        Food mockFood = new Food(boardDim);
+        Food food = new Food(boardDim);
         Coordinate oldFoodPos = new Coordinate(5, 4);
-        mockFood.setPos(oldFoodPos);
+        food.setPos(oldFoodPos);
 
         Coordinate firstPos = new Coordinate(4, 4);
-        Snake mockSnake = new Snake(firstPos);
-        int snakeLength = mockSnake.getLength();
-        Board mockBoard = new Board(boardDim);
+        Snake snake = new Snake(firstPos);
+        int snakeLength = snake.getLength();
+        Board board = new Board(boardDim);
 
-        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
-        while (!controller.inBoard(mockFood.getPos())) {
-            mockFood.generateRandomPosition();
+        Controller controller = new Controller(snake, board, food);
+        while (!controller.inBoard(food.getPos())) {
+            food.generateRandomPosition();
         }
 
         controller.setSnakeDirection(Direction.DOWN);
@@ -75,8 +75,8 @@ class SnakeTest {
         // By our game logic, we need to execute twice so that our snake body gets bigger
         controller.run();
 
-        boolean bigger = (snakeLength != mockSnake.getLength());
-        boolean newFood = (oldFoodPos.getX() != mockFood.getX() || oldFoodPos.getY() != mockFood.getY());
+        boolean bigger = (snakeLength != snake.getLength());
+        boolean newFood = (oldFoodPos.getX() != food.getX() || oldFoodPos.getY() != food.getY());
 
         boolean correct = (bigger && newFood);
 
@@ -88,17 +88,17 @@ class SnakeTest {
     public void testBodyCollision() {
         // Inicializar las posiciones donde esta la snake, y positionar la cabeza
         // justo antes de una celda con un cuerpo de snake
-        Snake mockSnake = new Snake(new Coordinate(4, 3));
+        Snake snake = new Snake(new Coordinate(4, 3));
         Coordinate[] coords = {new Coordinate(4, 4), new Coordinate(5, 4), new Coordinate(5, 3)};
-        mockSnake.setBody(coords);
+        snake.setBody(coords);
 
-        Board mockBoard = new Board(boardDim);
-        Food mockFood = new Food(boardDim);
-        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
-        while (!controller.inBoard(mockFood.getPos())) {
-            mockFood.generateRandomPosition();
+        Board board = new Board(boardDim);
+        Food food = new Food(boardDim);
+        Controller controller = new Controller(snake, board, food);
+        while (!controller.inBoard(food.getPos())) {
+            food.generateRandomPosition();
         }
-        mockSnake.setDirection(Direction.DOWN);
+        snake.setDirection(Direction.DOWN);
         controller.run();
 
         assertTrue(controller.isGameOver());
@@ -107,11 +107,11 @@ class SnakeTest {
     @Test
     public void testMinBoard() {
         Coordinate minDim = new Coordinate(3, 3); // Minimum board dimensions
-        Snake mockSnake = new Snake(new Coordinate(1, 1));
-        Board mockBoard = new Board(minDim);
-        Food mockFood = new Food(minDim);
+        Snake snake = new Snake(new Coordinate(1, 1));
+        Board board = new Board(minDim);
+        Food food = new Food(minDim);
 
-        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+        Controller controller = new Controller(snake, board, food);
         controller.setSnakeDirection(Direction.LEFT);
         controller.run();
 
@@ -120,11 +120,11 @@ class SnakeTest {
     @Test
     public void testMaxBoard() {
         Coordinate maxDim = new Coordinate(1000, 1000); // Big board dimension
-        Snake mockSnake = new Snake(new Coordinate(998, 998));
-        Board mockBoard = new Board(maxDim);
-        Food mockFood = new Food(maxDim);
+        Snake snake = new Snake(new Coordinate(998, 998));
+        Board board = new Board(maxDim);
+        Food food = new Food(maxDim);
 
-        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+        Controller controller = new Controller(snake, board, food);
         controller.setSnakeDirection(Direction.RIGHT);
         controller.run();
 
@@ -133,21 +133,21 @@ class SnakeTest {
 
     @Test
     public void testWinCondition() {
-        Food mockFood = new Food(boardDim);
+        Food food = new Food(boardDim);
         Coordinate oldFoodPos = new Coordinate(5, 4);
-        mockFood.setPos(oldFoodPos);
+        food.setPos(oldFoodPos);
 
         Coordinate firstPos = new Coordinate(4, 4);
-        Snake mockSnake = new Snake(firstPos);
+        Snake snake = new Snake(firstPos);
 
-        int snakeLength = mockSnake.getLength();
-        Board mockBoard = new Board(boardDim);
+        int snakeLength = snake.getLength();
+        Board board = new Board(boardDim);
 
-        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
-        while (!controller.inBoard(mockFood.getPos())) {
-            mockFood.generateRandomPosition();
+        Controller controller = new Controller(snake, board, food);
+        while (!controller.inBoard(food.getPos())) {
+            food.generateRandomPosition();
         }
-        mockSnake.setLength(controller.getMaxScore() - 1 );
+        snake.setLength(controller.getMaxScore() - 1 );
         controller.setSnakeDirection(Direction.DOWN);
 
         // By our game logic, we need to execute twice so that our snake body gets bigger
