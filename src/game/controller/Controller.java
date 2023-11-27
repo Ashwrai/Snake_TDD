@@ -106,14 +106,14 @@ public class Controller {
     public void foodCollision() {
         this.snake.grow();
         this.food.generateRandomPosition(); //regenerates food in another position when snake eats the last one
-        while (!inBoard(this.food.getPos())) {
+        while (!validPositionInBoard(this.food.getPos())) {
             this.food.generateRandomPosition();
         }
         this.score++;
     }
 
     // Check if a coordinate is within the board boundaries
-    public boolean inBoard(Coordinate toCheck) {
+    public boolean validPositionInBoard(Coordinate toCheck) {
         return (toCheck.getX() > 0 && toCheck.getX() < this.board.getBoardDim().getX() - 1 &&
                 toCheck.getY() > 0 && toCheck.getY() < this.board.getBoardDim().getY() - 1 &&
                 !snake.inSnake(toCheck));
@@ -137,8 +137,11 @@ public class Controller {
                 if (snake.getDirection() != Direction.RIGHT)
                     this.snake.setDirection(direction);
             }
-            case null, default -> {
+            case NULL -> {
                 this.snake.setDirection(direction);
+            }
+            case null, default -> {
+                throw new RuntimeException("Impossible input in setSnakeDirection");
             }
         }
     }

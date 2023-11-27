@@ -10,6 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 
 
 /**
@@ -64,8 +69,7 @@ public class Window extends JFrame implements ActionListener {
             GameThread gameThread = new GameThread(this);
             gameThread.start();
         } else if (e.getSource() == highestScoresButton) {
-//            GameScores gameScore = new GameScores(this);
-//            gameScore.start();
+            displayScoresPanel();
         } else if (e.getSource() == exitButton) {
             this.dispose();
         } else {
@@ -73,7 +77,32 @@ public class Window extends JFrame implements ActionListener {
         }
     }
 
-    static class GamePanel extends JPanel {
+    private void displayScoresPanel() {
+        JFrame scoresFrame = new JFrame("Scores");
+        scoresFrame.setLayout(new BorderLayout());
+
+        JTextArea scoresTextArea = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(scoresTextArea);
+        scoresFrame.add(scrollPane, BorderLayout.CENTER);
+
+        try {
+            File scoresFile = new File("usernames.txt");
+            Scanner scanner = new Scanner(scoresFile);
+
+            while (scanner.hasNextLine()) {
+                scoresTextArea.append(scanner.nextLine() + "\n");
+            }
+
+            scanner.close();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+        scoresFrame.setSize(300, 300);
+        scoresFrame.setVisible(true);
+    }
+
+        static class GamePanel extends JPanel {
         private final Controller controller;
         private Tile[][] board;
 
@@ -173,12 +202,22 @@ public class Window extends JFrame implements ActionListener {
                 }
                 controller.setSnakeDirection(keyEvent);
                 controller.run(); //updates board with the actual state
-                if (controller.isGameOver()) {
+                if (controller.isGameOver() || controller.isGameWon()) {
                     break;
                 }
                 board = controller.getBoardState();
                 gamePanel.setBoard(board);
             }
+
+            frame.remove(gamePanel);
+            JLabel finalLabel;
+            if (controller.isGameOver()) {
+                finalLabel = new JLabel("Game Over!");
+            } else {
+                finalLabel = new JLabel("You won !");
+            }
+
+            finalPanel(finalLabel);
         }
 
         class ArrowKeyListener extends KeyAdapter {
@@ -199,6 +238,45 @@ public class Window extends JFrame implements ActionListener {
                         keyEvent = Direction.DOWN;
                         break;
                 }
+            }
+        }
+
+        public void finalPanel(JLabel finalLabel) {
+            JPanel finalPanel = new JPanel();
+
+            JTextField usernameField = new JTextField(20);
+            finalPanel.add(finalLabel);
+
+            finalPanel.add(new JLabel("To Keep the Score, Enter Username: "));
+            finalPanel.add(usernameField);
+
+// Create a button to save username and handle the file writing
+            JButton saveButton = new JButton("Save Username");
+            saveButton.addActionListener(e -> {
+                String username = usernameField.getText();
+                if (!username.isEmpty()) {
+                    saveUsernameToFile(username);
+                }
+                frame.dispose();
+            });
+            finalPanel.add(saveButton);
+
+// Add the game over panel to the frame after the game loop finishes
+            frame.add(finalPanel, BorderLayout.CENTER);
+
+// Repaint and update the UI
+            frame.revalidate();
+            frame.repaint();
+        }
+
+        private void saveUsernameToFile(String username) {
+            try {
+                FileWriter writer = new FileWriter("usernames.txt", true); // Appends to file
+                writer.write(username + " " + controller.getScore() + "\n");
+                writer.close();
+                System.out.println("Username saved successfully!");
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
     }
