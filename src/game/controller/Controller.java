@@ -11,7 +11,7 @@ public class Controller {
     private int score;
     private boolean gameOver;
     private boolean gameWon;
-    private int maxScore;
+    private final int maxScore;
 
     public Controller(Coordinate boardDim) {
         this.board = new Board(boardDim); //Initialize game board
@@ -31,9 +31,6 @@ public class Controller {
         this.board = board;
         this.snake = snake;
         this.food = food;
-        while (!validPositionInBoard(this.food.getPos())) {
-            this.food.generateRandomPosition();
-        }
         updateBoard();
         this.maxScore = maxScore();
         this.score = 0;
@@ -66,6 +63,7 @@ public class Controller {
             }
         }
     }
+
     public void checkWin() {
         gameWon = (this.snake.getLength() == this.maxScore);
     }
@@ -143,12 +141,8 @@ public class Controller {
                 if (snake.getDirection() != Direction.RIGHT)
                     this.snake.setDirection(direction);
             }
-            case NULL -> {
-                this.snake.setDirection(direction);
-            }
-            case null, default -> {
-                throw new RuntimeException("Impossible input in setSnakeDirection");
-            }
+            case NULL -> this.snake.setDirection(direction);
+            case null, default -> throw new RuntimeException("Impossible input in setSnakeDirection");
         }
     }
 

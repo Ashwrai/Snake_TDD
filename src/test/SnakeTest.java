@@ -88,6 +88,9 @@ class SnakeTest {
         Board board = new Board(boardDim);
         Food food = new Food(boardDim);
         Controller controller = new Controller(snake, board, food);
+        while (!controller.validPositionInBoard(food.getPos())) {
+            food.generateRandomPosition();
+        }
         snake.setDirection(Direction.DOWN);
         controller.run();
 
@@ -106,6 +109,21 @@ class SnakeTest {
         controller.run();
 
         assertTrue(controller.isGameOver());
+    }
+
+    @Test
+    public void testMinPlayableBoard() {
+        Coordinate minDim = new Coordinate(4, 3); // Minimum board dimensions
+        Snake snake = new Snake(new Coordinate(1, 1));
+        Board board = new Board(minDim);
+        Food food = new Food(minDim);
+        food.setPos(new Coordinate(1, 2));
+
+        Controller controller = new Controller(snake, board, food);
+        controller.setSnakeDirection(Direction.RIGHT);
+        controller.run();
+
+        assertTrue(controller.isGameWon());
     }
 
     @Test
