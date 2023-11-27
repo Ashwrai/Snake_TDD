@@ -10,6 +10,9 @@ public class Controller {
     private final Food food;
     private int score;
     private boolean gameOver;
+    private boolean gameWon;
+
+    private int maxScore;
 
     public Controller(Coordinate boardDim) {
         this.board = new Board(boardDim); //Initialize game board
@@ -18,8 +21,10 @@ public class Controller {
         this.snake = new Snake(initialPos);
         this.food = new Food(boardDim); //Generates food in a random position
         updateBoard();
+        this.maxScore = maxScore();
         this.score = 0;
         this.gameOver = false;
+        this.gameWon = false;
     }
 
     public Controller(Snake snake, Board board, Food food) {
@@ -35,6 +40,7 @@ public class Controller {
     public void run() {
         this.snake.move();
         checkCollisions();
+        checkWin();
         updateBoard();
     }
 
@@ -54,6 +60,9 @@ public class Controller {
                 }
             }
         }
+    }
+    public void checkWin() {
+        gameWon = (this.snake.getLength() == this.maxScore);
     }
 
     // Update the game board with new snake, food, and wall positions
@@ -79,6 +88,20 @@ public class Controller {
         // Set snake head and food
         this.board.setTile(snakeHead.getX(), snakeHead.getY(), Tile.HEAD);
         this.board.setTile(food.getX(), food.getY(), Tile.FOOD);
+    }
+
+    private int maxScore() {
+        int maxScore = 0;
+
+        for (int i = 0; i < this.board.getBoardDim().getX(); i++) {
+            for (int j = 0; j < this.board.getBoardDim().getY(); j++) {
+                if (!(i == 0 || i == this.board.getBoardDim().getX() - 1 || j == 0 || j == this.board.getBoardDim().getY() - 1)) {
+                    maxScore++;
+                }
+            }
+        }
+
+        return maxScore;
     }
 
     public void foodCollision() {
@@ -135,6 +158,14 @@ public class Controller {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public int getMaxScore(){
+        return this.maxScore;
     }
 
 }

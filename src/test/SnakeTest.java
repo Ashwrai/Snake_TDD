@@ -3,6 +3,7 @@ package test;
 import game.controller.Controller;
 import game.model.*;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -130,6 +131,32 @@ class SnakeTest {
 
         assertTrue(controller.isGameOver());
     }
+
+    @Test
+    public void testWinCondition() {
+        Food mockFood = new Food(boardDim);
+        Coordinate oldFoodPos = new Coordinate(5, 4);
+        mockFood.setPos(oldFoodPos);
+
+        Coordinate firstPos = new Coordinate(4, 4);
+        Snake mockSnake = new Snake(firstPos);
+
+        int snakeLength = mockSnake.getLength();
+        Board mockBoard = new Board(boardDim);
+
+        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
+        while (!controller.inBoard(mockFood.getPos())) {
+            mockFood.generateRandomPosition();
+        }
+        mockSnake.setLength(controller.getMaxScore() - 1 );
+        controller.setSnakeDirection(Direction.DOWN);
+
+        // By our game logic, we need to execute twice so that our snake body gets bigger
+        controller.run();
+
+        assertTrue(controller.isGameWon());
+    }
+
 //    @Test
 //    public void testBoardMaxDim() {
 //        // Tests behaviour of the game when the board is maximum

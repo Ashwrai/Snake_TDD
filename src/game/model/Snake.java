@@ -51,6 +51,9 @@ public class Snake {
         length++;
     }
 
+    public void setLength (int length) {
+        this.length = length;
+    }
     public Direction getDirection() {
         return this.direction;
     }
