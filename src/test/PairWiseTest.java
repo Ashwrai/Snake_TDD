@@ -10,52 +10,57 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PairWiseTest {
 
     @Test
+    // Test that checks if food generates in a valid pos if board is large
     public void testFoodGenerationOnMaxBoardSize() {
         Coordinate maxDim = new Coordinate(1000, 1000);
-        Food mockFood = new Food(maxDim);
-        Board mockBoard = new Board(maxDim);
-        Snake mockSnake = new Snake(new Coordinate(4, 2));
+        Food food = new Food(maxDim);
+        Board board = new Board(maxDim);
+        Snake snake = new Snake(new Coordinate(4, 2));
 
-        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
-        mockFood.generateRandomPosition();
-        assertTrue(controller.validPositionInBoard(mockFood.getPos()));
+        Controller controller = new Controller(snake, board, food);
+        food.generateRandomPosition();
+        assertTrue(controller.validPositionInBoard(food.getPos()));
     }
 
     @Test
+    // Test that checks if food generates in a valid pos if board has minimum dimensions
     public void testFoodGenerationOnMinBoardSize() {
         Coordinate maxDim = new Coordinate(3, 3);
-        Food mockFood = new Food(maxDim);
-        Board mockBoard = new Board(maxDim);
-        Snake mockSnake = new Snake(new Coordinate(1, 1));
+        Food food = new Food(maxDim);
+        Board board = new Board(maxDim);
+        Snake snake = new Snake(new Coordinate(1, 1));
 
-        Controller controller = new Controller(mockSnake, mockBoard, mockFood);
-        mockFood.generateRandomPosition();
-        assertFalse(controller.validPositionInBoard(mockFood.getPos()));
+        Controller controller = new Controller(snake, board, food);
+        food.generateRandomPosition();
+        assertFalse(controller.validPositionInBoard(food.getPos()));
     }
 
     @Test
+    // Test that checks if the snake moves propertly and game works as espected in different boards
     public void testSnakeMovementOnDifferentBoardSizes() {
-        int[][] boardSizes = {
-                {5, 5}, {8, 10}, {10, 15} // Board sizes: {width, height}
+        Coordinate[] boardSizes = {
+            // Board sizes: {width, height}
+            new Coordinate( 5, 5), new Coordinate(8, 10), new Coordinate(10, 15)
         };
 
         Direction[] snakeMovements = {
-                Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT
+            Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT
         };
 
-        for (int[] boardSize : boardSizes) {
-            int width = boardSize[0];
-            int height = boardSize[1];
+        for (Coordinate boardSize : boardSizes) {
+            int width = boardSize.getX();
+            int height = boardSize.getY();
 
-            Board board = new Board(new Coordinate(width, height));
+            Board board = new Board(boardSize);
             Snake snake = new Snake(new Coordinate(width / 2, height / 2));
+            Food food = new Food(boardSize);
 
+            Controller controller = new Controller(snake, board, food);
             for (Direction direction : snakeMovements) {
-                snake.setDirection(direction);
-                snake.move();
+                controller.setSnakeDirection(direction);
+                controller.run();
 
-                // Add assertions to validate the snake's behavior on the board
-                // For example, check if the snake stays within the board boundaries
+                //We check if the snake stays within the board boundaries to validate the snake's behavior on the board
                 assertTrue(isWithinBoundaries(snake, width, height));
             }
         }
@@ -64,8 +69,8 @@ public class PairWiseTest {
     // Helper method to check if the snake is within the board boundaries
     private boolean isWithinBoundaries(Snake snake, int width, int height) {
         Coordinate headPosition = snake.getHeadPosition();
-        return headPosition.getX() >= 0 && headPosition.getX() < width &&
-                headPosition.getY() >= 0 && headPosition.getY() < height;
+        return headPosition.getX() > 0 && headPosition.getX() < width - 1 &&
+            headPosition.getY() > 0 && headPosition.getY() < height - 1;
     }
 
 }

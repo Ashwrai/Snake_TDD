@@ -19,7 +19,6 @@ class SnakeTest {
         return (snake.getHeadPosition().getX() == oldPosition.getX() &&
                 snake.getHeadPosition().getY() == oldPosition.getY());
     }
-
     @Test
     public void testSnakeMoveUp() {
         assertTrue(moveSnake(Direction.UP));
@@ -41,6 +40,7 @@ class SnakeTest {
     }
 
     @Test
+    //Test that checks if game ends when there is a wall collision
     public void testWallCollision() {
         Board board = new Board(boardDim);
         Snake snake = new Snake(new Coordinate(1, 1));
@@ -54,6 +54,7 @@ class SnakeTest {
     }
 
     @Test
+    //Test that checks that if the snake eats then the body gets bigger, the score increases and new food appears
     public void testFoodCollision() {
         Food food = new Food(boardDim);
         Coordinate oldFoodPos = new Coordinate(4, 3);
@@ -68,9 +69,9 @@ class SnakeTest {
         int oldScore = controller.getScore();
         controller.setSnakeDirection(Direction.LEFT);
 
-        // By our game logic, we need to execute twice so that our snake body gets bigger
         controller.run();
 
+        //Compares actual data with old data
         boolean bigger = (snakeLength != snake.getLength() && oldScore != controller.getScore());
         boolean newFood = (oldFoodPos.getX() != food.getX() || oldFoodPos.getY() != food.getY());
 
@@ -78,6 +79,7 @@ class SnakeTest {
     }
 
     @Test
+    //Test that checks if game ends when there is a body collision
     public void testBodyCollision() {
 
         Snake snake = new Snake(new Coordinate(4, 3));
@@ -87,9 +89,12 @@ class SnakeTest {
         Board board = new Board(boardDim);
         Food food = new Food(boardDim);
         Controller controller = new Controller(snake, board, food);
+
+        //We also check if food is generated in a valid position because we do it randomly
         while (!controller.validPositionInBoard(food.getPos())) {
             food.generateRandomPosition();
         }
+
         snake.setDirection(Direction.DOWN);
         controller.run();
 
@@ -97,6 +102,7 @@ class SnakeTest {
     }
 
     @Test
+    //Test to check if game works as espected for minimum dimensions
     public void testMinBoard() {
         Coordinate minDim = new Coordinate(3, 3); // Minimum board dimensions
         Snake snake = new Snake(new Coordinate(1, 1));
@@ -111,6 +117,7 @@ class SnakeTest {
     }
 
     @Test
+    //Test to check if we can play in a small board and works as it's espected
     public void testMinPlayableBoard() {
         Coordinate minDim = new Coordinate(4, 3); // Minimum playable board dimensions (2 Tiles)
         Snake snake = new Snake(new Coordinate(1, 1));
@@ -126,6 +133,7 @@ class SnakeTest {
     }
 
     @Test
+    //Test to check if we can play in a large board and works as it's espected
     public void testMaxBoard() {
         Coordinate maxDim = new Coordinate(1000, 1000); // Big board dimension
         Snake snake = new Snake(new Coordinate(998, 998));
@@ -140,6 +148,7 @@ class SnakeTest {
     }
 
     @Test
+    //Test that checks if when the snake is as big as the board the player wins
     public void testWinCondition() {
         Food food = new Food(boardDim);
         Coordinate oldFoodPos = new Coordinate(5, 4);
@@ -152,10 +161,9 @@ class SnakeTest {
 
         Controller controller = new Controller(snake, board, food);
 
-        snake.setLength(controller.getMaxScore() - 1);
+        snake.setLength(controller.getMaxScore() - 1); //Snake is as large as the number of tiles
         controller.setSnakeDirection(Direction.DOWN);
 
-        // By our game logic, we need to execute twice so that our snake body gets bigger
         controller.run();
 
         assertTrue(controller.isGameWon());

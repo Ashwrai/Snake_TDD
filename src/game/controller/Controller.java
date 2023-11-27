@@ -10,8 +10,8 @@ public class Controller {
     private final Food food;
     private final int maxScore;
     private int score;
-    private boolean gameOverWall;
-    private boolean gameOverBody;
+    private boolean gameOverWall; //Finalitza joc per col·lisió amb pared
+    private boolean gameOverBody; //Finalitza joc per col·lisió amb cos serp
     private boolean gameWon;
 
     public Controller(Coordinate boardDim) {
