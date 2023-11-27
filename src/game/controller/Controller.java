@@ -11,14 +11,11 @@ public class Controller {
     private int score;
     private boolean gameOver;
     private boolean gameWon;
-
     private int maxScore;
 
     public Controller(Coordinate boardDim) {
         this.board = new Board(boardDim); //Initialize game board
-        // Initial position for the snake
-        Coordinate initialPos = new Coordinate(4, 2);
-        this.snake = new Snake(initialPos);
+        this.snake = new Snake(new Coordinate(1, 1));
         this.food = new Food(boardDim); //Generates food in a random position
         updateBoard();
         this.maxScore = maxScore();
@@ -32,8 +29,10 @@ public class Controller {
         this.snake = snake;
         this.food = food;
         updateBoard();
+        this.maxScore = maxScore();
         this.score = 0;
         this.gameOver = false;
+        this.gameWon = false;
     }
 
     // Update the snake state on each iteration

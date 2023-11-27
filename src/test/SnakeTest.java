@@ -3,7 +3,6 @@ package test;
 import game.controller.Controller;
 import game.model.*;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;

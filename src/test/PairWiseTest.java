@@ -23,6 +23,7 @@ public class PairWiseTest extends SnakeTest {
         mockFood.generateRandomPosition();
         assertTrue(controller.inBoard(mockFood.getPos()));
     }
+
     @Test
     public void testFoodGenerationOnMinBoardSize() {
         Coordinate maxDim = new Coordinate(3, 3);
@@ -35,5 +36,5 @@ public class PairWiseTest extends SnakeTest {
         assertFalse(controller.inBoard(mockFood.getPos()));
     }
 
-    
+
 }
