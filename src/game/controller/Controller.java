@@ -17,6 +17,9 @@ public class Controller {
         this.board = new Board(boardDim); //Initialize game board
         this.snake = new Snake(new Coordinate(1, 1));
         this.food = new Food(boardDim); //Generates food in a random position
+        while (!validPositionInBoard(this.food.getPos())) {
+            this.food.generateRandomPosition();
+        }
         updateBoard();
         this.maxScore = maxScore();
         this.score = 0;
@@ -28,6 +31,9 @@ public class Controller {
         this.board = board;
         this.snake = snake;
         this.food = food;
+        while (!validPositionInBoard(this.food.getPos())) {
+            this.food.generateRandomPosition();
+        }
         updateBoard();
         this.maxScore = maxScore();
         this.score = 0;

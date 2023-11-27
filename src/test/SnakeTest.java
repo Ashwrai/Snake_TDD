@@ -88,9 +88,6 @@ class SnakeTest {
         Board board = new Board(boardDim);
         Food food = new Food(boardDim);
         Controller controller = new Controller(snake, board, food);
-        while (!controller.validPositionInBoard(food.getPos())) {
-            food.generateRandomPosition();
-        }
         snake.setDirection(Direction.DOWN);
         controller.run();
 
