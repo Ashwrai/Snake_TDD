@@ -44,7 +44,7 @@ public class PairWiseTest {
         };
 
         Direction[] snakeMovements = {
-            Direction.UP, Direction.DOWN, Direction.LEFT, Direction.RIGHT
+            Direction.UP, Direction.LEFT, Direction.DOWN, Direction.RIGHT
         };
 
         for (Coordinate boardSize : boardSizes) {

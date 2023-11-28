@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 // We are testing the only loop that does not require a view. Controller.getMaxScore()
 public class LoopTest {
+    // expecterMaxScore = (px - 2) * (py - 2)
     @Test
     public void testGetMaxScoreWithBoundaryCases() {
         // Testing with minimal and moderately small board sizes
@@ -20,6 +21,13 @@ public class LoopTest {
         // Testing with reasonably sized boards
         testMaxScore(new Coordinate(5, 5), 9);
         testMaxScore(new Coordinate(10, 10), 64);
+    }
+
+    @Test
+    public void testGetMaxScoreWithIrregularCases() {
+        // Testing with irregular sized boards
+        testMaxScore(new Coordinate(5, 7), 15);
+        testMaxScore(new Coordinate(14, 20), 216);
     }
 
     @Test
