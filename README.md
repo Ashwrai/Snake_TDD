@@ -4,11 +4,11 @@ This repository contains the source code and documentation for the Snake Game pr
 
 ## Project Overview
 
+The project is implemented using a Model-View-Controller architecture, allowing the development of the Model and Controller parts under the **TDD** paradigm without the need for the View part to be implemented.
+
 The main objective of the game is to guide a snake through a game field, collecting food to score points while avoiding collisions with the walls of the game and its own body. When the snake collides, the game ends.
 
 If the snake reaches the maximum score (number of cells the snake can occupy on the board), meaning it fills the entire board, the player wins.
-
-The project is implemented using a Model-View-Controller architecture, allowing the development of the Model and Controller parts under the **TDD** paradigm without the need for the View part to be implemented.
 
 ## Repository
 
