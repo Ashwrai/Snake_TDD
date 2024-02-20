@@ -28,65 +28,41 @@ The Model and Controller parts were developed using the Test-Driven Development 
 
 ### Test Cases
 
-#### Movement Test
-
-One of the initial tests was to verify that the snake could move in all allowed directions.
-
-#### Wall Collision Test
-
-Another test verified collisions of the snake with the walls of the game field.
-
-#### Food Collision Test
-
-This test checked if the snake could correctly consume food.
-
-#### Self Collision Test
-
-This test ensured that the game would end if the snake collided with its own body.
+| Test Case                  | Description                                       |
+|----------------------------|---------------------------------------------------|
+| Movement Test              | Verify snake movement in all allowed directions.  |
+| Wall Collision Test        | Check collisions of the snake with the walls.     |
+| Food Collision Test        | Verify snake's ability to consume food.           |
+| Self Collision Test        | Ensure the game ends if the snake collides with itself. |
 
 ### Equivalent Partition Testing
 
 Test cases were designed to cover different partitions of input space.
 
-#### Minimum Board Dimensions Test
-
-This test verified the functionality with the smallest possible board size.
-
-#### Maximum Board Dimensions Test
-
-Similar to the minimum size test, this one checked the functionality with the largest possible board size.
+| Test Case                              | Description                                       |
+|----------------------------------------|---------------------------------------------------|
+| Minimum Board Dimensions Test          | Verify functionality with the smallest board size.|
+| Maximum Board Dimensions Test          | Check functionality with the largest board size. |
 
 ### Pairwise Testing
 
 Tests were designed to cover critical value combinations.
 
-#### Snake Movement Test on Different Boards
-
-This test combined various board dimensions with snake movement to ensure correct behavior.
-
-#### Food Generation Test on Border Size Boards
-
-This test ensured food generation in boards with minimum or maximum dimensions.
+| Test Case                              | Description                                       |
+|----------------------------------------|---------------------------------------------------|
+| Snake Movement Test on Different Boards | Combine various board dimensions with snake movement. |
+| Food Generation Test on Border Size Boards | Ensure food generation in boards with minimum or maximum dimensions. |
 
 ### Coverage Testing
 
 Various coverage testing techniques were employed to ensure comprehensive testing.
 
-#### Statement Coverage
-
-The code coverage report showed the percentage of lines executed during testing.
-
-#### Decision Coverage
-
-The decision coverage was used to ensure that all options of a decision were evaluated during testing.
-
-#### Condition Coverage
-
-Condition coverage tests ensured that all conditions in the code were evaluated with true and false values.
-
-#### Path Coverage
-
-Path coverage tests ensured that all possible execution paths in the code were traversed.
+| Test Type                  | Description                                       |
+|----------------------------|---------------------------------------------------|
+| Statement Coverage         | Percentage of lines executed during testing.     |
+| Decision Coverage          | Ensure all options of a decision were evaluated. |
+| Condition Coverage         | Ensure all conditions in the code were evaluated with true and false values. |
+| Path Coverage              | Ensure all possible execution paths in the code were traversed. |
 
 ### Loop Testing
 
