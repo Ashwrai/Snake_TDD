@@ -1,6 +1,6 @@
 # Snake Game
 
-This repository contains the source code and documentation for the Snake Game project developed as part of the Test and Software Quality course.
+This repository contains the source code and test code for the Snake Game project developed as part of the Test and Software Quality course.
 
 ## Project Overview
 
